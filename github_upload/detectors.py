@@ -33,9 +33,9 @@ def rolling_baseline(X, window_days=C.D1_WINDOW_DAYS):
     with np.errstate(invalid="ignore", divide="ignore"):
         mu = s1 / cnt
         var = s2 / cnt - mu ** 2
-    mu[cnt < 7] = np.nan                       # need at least a week of history
+    mu[cnt < 7] = np.nan                       
     sd = np.sqrt(np.maximum(var, 0.0))
-    sd = np.maximum(sd, 0.05 * mu + 0.01)      # floor avoids division by ~0
+    sd = np.maximum(sd, 0.05 * mu + 0.01)      
     return mu.reshape(n, -1).astype(np.float32), sd.reshape(n, -1).astype(np.float32)
 
 
@@ -45,13 +45,13 @@ def _burst_state(status, min_count, group_size=None):
     off_tr = np.zeros((n, T), dtype=bool)
     off_tr[:, 1:] = (status[:, :-1] == 1) & (status[:, 1:] == 0)
     win = off_tr.copy()
-    win[:, 1:] |= off_tr[:, :-1]               # transitions in [t-1, t]
+    win[:, 1:] |= off_tr[:, :-1]               
     if group_size is None:
-        burst_t = win.sum(axis=0) >= min_count              # (T,)
+        burst_t = win.sum(axis=0) >= min_count              
         burst = win & burst_t[None, :]
     else:
         g = win.reshape(n // group_size, group_size, T)
-        burst_g = g.sum(axis=1) >= min_count               # (G, T)
+        burst_g = g.sum(axis=1) >= min_count               
         burst = (g & burst_g[:, None, :]).reshape(n, T)
     active = np.zeros((n, T), dtype=bool)
     state = np.zeros(n, dtype=bool)
@@ -140,7 +140,7 @@ def run_all(X, status):
 
 def cusum_low_flags(z, kappa=1.0, h=10.0, clip=6.0, cap=1.5):
     
-    zc = np.clip(np.nan_to_num(-z, nan=kappa), -clip, clip)   # NaN -> no change
+    zc = np.clip(np.nan_to_num(-z, nan=kappa), -clip, clip)   
     S = np.zeros(z.shape[0]); out = np.zeros(z.shape, dtype=bool)
     for t in range(z.shape[1]):
         S = np.minimum(np.maximum(0.0, S + zc[:, t] - kappa), cap * h)
