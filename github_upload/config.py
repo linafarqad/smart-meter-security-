@@ -3,10 +3,10 @@
 N_METERS = 500           
 GROUP_SIZE = 20           
 N_DAYS = 365              
-SLOTS = 48                # 30-minute readings per day (A2)
-T = N_DAYS * SLOTS        # 17,520 intervals per meter
-WARMUP_DAYS = 56          # attack-free warm-up (A5)
-N_SEEDS = 30              # repetitions per setting (A5)
+SLOTS = 48               
+T = N_DAYS * SLOTS       
+WARMUP_DAYS = 56         
+N_SEEDS = 30              
 
 MEAN_DAILY_KWH = 24.0     
 LOGNORM_SIGMA = 0.35      
