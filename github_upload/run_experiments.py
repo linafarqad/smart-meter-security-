@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from multiprocessing import Pool
 
+
 if __package__:
     from . import config as C, generator, attacks, detectors as D, metrics
 else:
