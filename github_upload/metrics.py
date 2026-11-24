@@ -35,7 +35,7 @@ def evaluate(flag, label, events, benign=None):
                delay=float(np.mean(delays)) if delays else np.nan,
                delay_median=float(np.median(delays)) if delays else np.nan,
                n_events=n_ev)
-    if benign is not None:   # where do false positives come from?
+    if benign is not None:   
         fpm = flag[:, EVAL_START:] & ~label[:, EVAL_START:]
         b = benign[:, EVAL_START:]
         names = {0: "none", 1: "vacation", 2: "weather", 3: "legit_off", 4: "comms"}
