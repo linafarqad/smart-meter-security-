@@ -29,7 +29,7 @@ def inject(data, scenario, rng, fixed=None):
     X = data["X"].copy()
     status = data["status"].copy()
     label = np.zeros(X.shape, dtype=bool)
-    events = []                        # dicts: meter, start, end, campaign, info
+    events = []                        
     n = C.N_METERS
     starts = _campaign_starts(rng, C.CAMPAIGNS_PER_RUN, max_len=7 * C.SLOTS)
 
@@ -74,7 +74,7 @@ def inject(data, scenario, rng, fixed=None):
             variant = fixed.get("variant") or ("freeze" if rng.random() < 0.5 else "replay")
             meters = rng.choice(n, max(1, int(round(frac * n))), replace=False)
             for m in meters:
-                a, b = t0 + 1, t0 + 1 + L          # first altered reading is t0+1
+                a, b = t0 + 1, t0 + 1 + L         
                 if variant == "freeze":
                     hist = X[m, :a]
                     last = hist[~np.isnan(hist)][-1]
@@ -91,9 +91,9 @@ def inject(data, scenario, rng, fixed=None):
             off = int(rng.integers(C.S4_OFF_INTERVALS[0], C.S4_OFF_INTERVALS[1] + 1))
             meters = rng.choice(n, max(1, int(round(frac * n))), replace=False)
             for m in meters:
-                if status[m, t0 - 1] == 0:          # already legitimately off
+                if status[m, t0 - 1] == 0:          
                     continue
-                a = t0 + int(rng.integers(0, 2))    # within 1-2 intervals
+                a = t0 + int(rng.integers(0, 2))    
                 b = a + off
                 status[m, a:b] = 0
                 present = ~np.isnan(X[m, a:b])
