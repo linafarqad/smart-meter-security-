@@ -6,7 +6,6 @@ if __package__:
 else:
     import config as C
 
-
 def _campaign_starts(rng, n_campaigns, max_len):
     
     first = C.WARMUP_DAYS * C.SLOTS
